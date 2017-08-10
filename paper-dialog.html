@@ -90,7 +90,9 @@ element.
     ],
 
     listeners: {
-      'neon-animation-finish': '_onNeonAnimationFinish'
+      'neon-animation-finish': '_onNeonAnimationFinish',
+      // Bug: https://github.com/PolymerElements/paper-dialog/issues/7
+      'iron-overlay-opened': '_patchOverlay'
     },
 
     _renderOpened: function() {
@@ -108,6 +110,12 @@ element.
         this._finishRenderOpened();
       } else {
         this._finishRenderClosed();
+      }
+    },
+
+    _patchOverlay: function(e) {
+      if (e.target.withBackdrop) {
+        e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
       }
     }
 
